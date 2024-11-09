@@ -10,7 +10,7 @@ export default function Index() {
   const [permission, requestPermission] = useCameraPermissions();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef(null);
-  const [isCameraActive, setIsCameraActive] = useState(true); // To manage camera visibility
+  const [isCameraActive, setIsCameraActive] = useState(false); // To manage camera visibility
 
   if (!permission) {
     return <View />; // Camera permissions are still loading
@@ -53,7 +53,7 @@ export default function Index() {
         const responseData = await response.json();
         console.log(responseData);
       } catch (error) {
-        console.error("Error uploading image:", error);
+        // console.error("Error uploading image:", error);
       }
     }
   };
