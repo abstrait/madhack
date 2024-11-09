@@ -34,9 +34,26 @@ export default function Index() {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const data = await cameraRef.current.takePictureAsync(options);
       const source = data.uri;
+      const encodedJPEG = data.base64;
       if (source) {
         setPhotoUri(source); // Set the photoUri when a picture is taken
         console.log("picture", source);
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: encodedJPEG,
+          }),
+        });
+        const responseData = await response.json();
+        console.log(responseData);
+      } catch (error) {
+        console.error("Error uploading image:", error);
       }
     }
   };
