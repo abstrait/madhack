@@ -1,6 +1,8 @@
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import ExpenseTable from './expenseTable';
+
 
 export default function Index() {
   const [facing, setFacing] = useState("back");
@@ -57,7 +59,10 @@ export default function Index() {
         </CameraView>
       )}
       {!isCameraActive && (
-            <Button title="Open Camera" onPress={() => (setIsCameraActive(true))}></Button>
+        <>
+        <ExpenseTable></ExpenseTable>
+        <Button title="Open Camera" onPress={() => (setIsCameraActive(true))}></Button>
+        </>
       )}
       {/* {photoUri && (
         <Image source={{ uri: photoUri }} style={styles.preview} />
