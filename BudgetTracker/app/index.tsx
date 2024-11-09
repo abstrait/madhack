@@ -5,16 +5,15 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-n
 export default function Index() {
   const [facing, setFacing] = useState("back");
   const [permission, requestPermission] = useCameraPermissions();
-  const [photoUri, setPhotoUri] = useState<string | null>(null); // Allow null as initial state
-  const cameraRef = useRef(null); // Specify Camera type for cameraRef
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const cameraRef = useRef(null);
+  const [isCameraActive, setIsCameraActive] = useState(true); // To manage camera visibility
 
   if (!permission) {
-    // Camera permissions are still loading.
-    return <View />;
+    return <View />; // Camera permissions are still loading
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -23,42 +22,46 @@ export default function Index() {
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing((current) => (current === "back" ? "front" : "back"));
-  }
+  const closeCamera = () => {
+    setIsCameraActive(false); // Hide the camera when 'Close' is pressed
+  };
 
-  async function takePicture() {
+  const takePicture = async () => {
     if (cameraRef.current) {
-      try {
-        const options = { quality: 0.5, base64: true, exif: true };
-        const picture = await cameraRef.current.takePictureAsync(options);
-        setPhotoUri(picture.uri);  // Store the photo URI
-        console.log(picture);
-      } catch (error) {
-        console.error("Error taking picture: ", error);
+      const options = { quality: 0.5, base64: true, skipProcessing: true };
+      const data = await cameraRef.current.takePictureAsync(options);
+      const source = data.uri;
+      if (source) {
+        setPhotoUri(source); // Set the photoUri when a picture is taken
+        console.log("picture", source);
       }
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        style={styles.camera}
-        onCameraReady={() => console.log("Camera is ready")}
-      >
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            <Text style={styles.text}>Take Picture</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
-      {photoUri && (
-        <Image source={{ uri: photoUri }} style={styles.preview} />
+      {isCameraActive && (
+        <CameraView
+          ref={cameraRef}
+          style={styles.camera}
+          onCameraReady={() => console.log("Camera is ready")}
+        >
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={closeCamera}>
+              <Text style={styles.text}>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={takePicture}>
+              <Text style={styles.text}>Take Picture</Text>
+            </TouchableOpacity>
+          </View>
+        </CameraView>
       )}
+      {!isCameraActive && (
+            <Button title="Open Camera" onPress={() => (setIsCameraActive(true))}></Button>
+      )}
+      {/* {photoUri && (
+        <Image source={{ uri: photoUri }} style={styles.preview} />
+      )} */}
     </View>
   );
 }
