@@ -2,20 +2,33 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 
-export default function ExpenseTable() {
+interface ExpenseTableProps {
+  titles: string[];
+  totals: number[];
+}
+
+export default function ExpenseTable({ titles, totals }: ExpenseTableProps) {
   // Use useState for managing state in functional components
-  const [tableHead] = useState(['Date', 'Store Name', 'Total']);
-  const [tableData] = useState([
-    ['John', '25', 'New York'],
-    ['Alice', '30', 'Los Angeles'],
-    ['Bob', '22', 'Chicago'],
-  ]);
+  const [tableHead] = useState(['Store Name', 'Total']);
+  const transactions = [];
+  for(let i = 0; i < titles.length; i++) {
+    for(let j = 0; j < totals.length; j++) {
+      if(i != j) {
+        continue;
+      }
+      let title = titles[i];
+      let total = totals[i];
+      let transactionTuple = [title, total];
+      transactions.push(transactionTuple);
+    }
+  }
+
 
   return (
     <View style={styles.container}>
       <Table borderStyle={{ borderWidth: 1, borderColor: '#c8e1ff' }}>
         <Row data={tableHead} style={styles.head} textStyle={styles.text} />
-        <Rows data={tableData} textStyle={styles.text} />
+        <Rows data={transactions} textStyle={styles.text} />
       </Table>
     </View>
   );

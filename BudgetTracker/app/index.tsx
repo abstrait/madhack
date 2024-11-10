@@ -11,8 +11,8 @@ export default function Index() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef(null);
   const [isCameraActive, setIsCameraActive] = useState(false); // To manage camera visibility
-  const [title, setTitle] = useState("");
-  const [total, setTotal] = useState();
+  const [titles, setTitles] = useState<string[]>([]);
+  const [totals, setTotals] = useState<number[]>([]);
 
   // if (!permission) {
   //   return <View />; // Camera permissions are still loading
@@ -37,10 +37,20 @@ export default function Index() {
         return res.json();
       }).then((json) => {
         // const data = JSON.parse(json);
-        setTitle(json.title);
-        setTotal(json.total);
-        console.log(title);
-        console.log(total);
+        setTitles(old => {
+          let result: string[] = [...old];
+          let title = json.title;
+          result.push(title);
+          return result;
+        });
+        setTotals(old => {
+          let result: number[] = [...old];
+          let total = json.total;
+          result.push(total);
+          return result;
+        });
+        console.log(titles);
+        console.log(totals);
         console.log(json)
       });
     } catch (error) {
@@ -101,7 +111,7 @@ export default function Index() {
       )}
       {!isCameraActive && (
         <>
-        <ExpenseTable></ExpenseTable>
+        <ExpenseTable titles={titles} totals={totals}></ExpenseTable>
         <Button title="Open Camera" onPress={() => (setIsCameraActive(true))}></Button>
         </>
       )}
