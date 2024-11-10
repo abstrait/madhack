@@ -28,7 +28,7 @@ export default function Index() {
   const closeCamera = () => {
     setIsCameraActive(false); // Hide the camera when 'Close' is pressed
     try {
-      fetch('http://10.140.106.143:8000/get', {
+      fetch('http://10.165.11.126:8000/get', {
         method: 'GET',
       }).then((res) => {
         console.log(res.status);
@@ -45,13 +45,14 @@ export default function Index() {
       const data = await cameraRef.current.takePictureAsync(options);
       const source = data.uri;
       const encodedJPEG = data.base64;
+      console.log(data.base64.slice(0, 50));
       if (source) {
         setPhotoUri(source); // Set the photoUri when a picture is taken
         console.log("picture", source);
       }
 
       try {
-        fetch('http://10.140.106.143:8000/upload', {
+        fetch('http://10.165.11.126:8000/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

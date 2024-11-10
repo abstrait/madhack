@@ -11,8 +11,8 @@ class ReceiptReader():
     def reader(self):
         print("ha")
         self.image = cv2.imread(self.image, cv2.IMREAD_GRAYSCALE)
-        # img = Image.open("/Users/2monkey3/Desktop/madhack/Print_Payment_Receipt.JPG")
-        extracted_text = pytesseract.image_to_string(self.image, lang='eng')
+        img = Image.open("tmp_image.png")
+        extracted_text = pytesseract.image_to_string(img, lang='eng')
         numbers = re.findall(r"\d+\.{1}\d+", extracted_text)
         total = float(numbers[-1])
         # print(extracted_text)
