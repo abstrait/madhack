@@ -1,6 +1,6 @@
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Pressable } from 'react-native';
 import ExpenseTable from './expenseTable';
 import ImagePreview from './imagePreview';
 
@@ -112,7 +112,9 @@ export default function Index() {
       {!isCameraActive && (
         <>
         <ExpenseTable titles={titles} totals={totals}></ExpenseTable>
-        <Button title="Open Camera" onPress={() => (setIsCameraActive(true))}></Button>
+        <Pressable style={styles.button} onPress={() => (setIsCameraActive(true))}>
+          <Text style={styles.text}>Open Camera</Text>
+        </Pressable>
         </>
       )}
       
@@ -140,9 +142,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    padding: 10,
-    backgroundColor: '#00000080',
-    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    height: 100,
+    backgroundColor: 'black',
   },
   text: {
     fontSize: 18,

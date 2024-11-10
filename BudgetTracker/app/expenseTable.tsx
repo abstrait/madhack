@@ -26,9 +26,9 @@ export default function ExpenseTable({ titles, totals }: ExpenseTableProps) {
 
   return (
     <View style={styles.container}>
-      <Table borderStyle={{ borderWidth: 1, borderColor: '#c8e1ff' }}>
+      <Table>
         <Row data={tableHead} style={styles.head} textStyle={styles.text} />
-        <Rows data={transactions} textStyle={styles.text} />
+        <Rows data={transactions} style={styles.trans} textStyle={styles.text} />
       </Table>
     </View>
   );
@@ -42,7 +42,15 @@ const styles = StyleSheet.create({
   },
   head: {
     height: 40,
-    backgroundColor: '#f1f8ff',
+    backgroundColor: '#b8b8db',
+    borderRadius: 10,
+    borderColor: '#5a5a8c',
+    borderWidth: 2
+  },
+  trans: {
+    height: 40,
+    backgroundColor: '#e9e9f0',
+    borderRadius: 10,
   },
   text: {
     margin: 6,
