@@ -30,7 +30,7 @@ export default function Index() {
   const closeCamera = () => {
     setIsCameraActive(false); // Hide the camera when 'Close' is pressed
     try {
-      fetch('http://10.165.11.126:8000/get', {
+      fetch('http://10.139.43.92:8000/get', {
         method: 'GET',
       }).then((res) => {
         console.log(res.status);
@@ -61,7 +61,7 @@ export default function Index() {
       }
 
       try {
-        fetch('http://10.165.11.126:8000/upload', {
+        fetch('http://10.139.43.92:8000/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

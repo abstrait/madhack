@@ -7,11 +7,13 @@ import re
 class ReceiptReader():
     def __init__(self, image):
         self.image = image
+        Image.LOAD_TRUNCATED_IMAGES = True
         
     def reader(self):
         print("ha")
         self.image = cv2.imread(self.image, cv2.IMREAD_GRAYSCALE)
         img = Image.open("tmp_image.png")
+        img = img.rotate(270)
         extracted_text = pytesseract.image_to_string(img, lang='eng')
         print(extracted_text)
         numbers = re.findall(r"\d+\.{1}\d+", extracted_text)
