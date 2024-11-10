@@ -11,6 +11,8 @@ export default function Index() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef(null);
   const [isCameraActive, setIsCameraActive] = useState(false); // To manage camera visibility
+  const [title, setTitle] = useState("");
+  const [total, setTotal] = useState();
 
   // if (!permission) {
   //   return <View />; // Camera permissions are still loading
@@ -33,7 +35,14 @@ export default function Index() {
       }).then((res) => {
         console.log(res.status);
         return res.json();
-      }).then((json) => console.log(json));
+      }).then((json) => {
+        // const data = JSON.parse(json);
+        setTitle(json.title);
+        setTotal(json.total);
+        console.log(title);
+        console.log(total);
+        console.log(json)
+      });
     } catch (error) {
       console.log("Error encountered.");
     }

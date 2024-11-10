@@ -28,7 +28,13 @@ def upload_image():
 def get_expenditures():
     receiptReader = ReceiptReader("tmp_image.png")
     title, total = receiptReader.reader()
-    return json.dumps({title, total})
+    ret = {
+        "title": title,
+        "total": total
+    }
+    print("Title:", title)
+    print("Total:", total)
+    return json.dumps(ret)
     
 
 
