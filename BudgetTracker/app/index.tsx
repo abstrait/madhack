@@ -12,21 +12,31 @@ export default function Index() {
   const cameraRef = useRef(null);
   const [isCameraActive, setIsCameraActive] = useState(false); // To manage camera visibility
 
-  if (!permission) {
-    return <View />; // Camera permissions are still loading
-  }
+  // if (!permission) {
+  //   return <View />; // Camera permissions are still loading
+  // }
 
-  if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
-      </View>
-    );
-  }
+  // if (!permission.granted) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text style={styles.message}>We need your permission to show the camera</Text>
+  //       <Button onPress={requestPermission} title="Grant Permission" />
+  //     </View>
+  //   );
+  // }
 
   const closeCamera = () => {
     setIsCameraActive(false); // Hide the camera when 'Close' is pressed
+    try {
+      fetch('http://10.140.106.143:8000/get', {
+        method: 'GET',
+      }).then((res) => {
+        console.log(res.status);
+        return res.json();
+      }).then((json) => console.log(json));
+    } catch (error) {
+      console.log("Error encountered.");
+    }
   };
 
   const takePicture = async () => {
@@ -41,7 +51,7 @@ export default function Index() {
       }
 
       try {
-        const response = await fetch('http://127.0.0.1:5000/upload', {
+        fetch('http://10.140.106.143:8000/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,11 +59,11 @@ export default function Index() {
           body: JSON.stringify({
             image: encodedJPEG,
           }),
-        });
-        const responseData = await response.json();
-        console.log(responseData);
+        }).then((res) => {
+          console.log(res.status);
+        })
       } catch (error) {
-        // console.error("Error uploading image:", error);
+        console.log("Error encountered.");
       }
     }
   };

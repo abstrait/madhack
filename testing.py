@@ -5,12 +5,12 @@ import enum
 import re
 
 class ReceiptReader():
-    def __init__(self):
-        self.image = None
+    def __init__(self, image):
+        self.image = image
         
     def reader(self):
         print("ha")
-        self.image = cv2.imread("/Users/jasperbo/Desktop/madhack/Print_Payment_Receipt.JPG", cv2.IMREAD_GRAYSCALE)
+        self.image = cv2.imread(self.image, cv2.IMREAD_GRAYSCALE)
         # img = Image.open("/Users/2monkey3/Desktop/madhack/Print_Payment_Receipt.JPG")
         extracted_text = pytesseract.image_to_string(self.image, lang='eng')
         numbers = re.findall(r"\d+\.{1}\d+", extracted_text)
